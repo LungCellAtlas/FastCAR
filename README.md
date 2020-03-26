@@ -84,8 +84,6 @@ write.corrected.matrix(cellMatrix, correctedMatrixFolder, ambientProfile)
 ```
 
 
-
-
 ## Authors
 
 * **Marijn Berg** - m.berg@umcg.nl

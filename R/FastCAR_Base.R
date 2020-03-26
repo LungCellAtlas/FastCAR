@@ -47,7 +47,7 @@ determine.background.to.remove = function(fullCellMatrix, cellMatrix, emptyDropl
   # droplets that are empty but not unused barcodes, unused barcodes have zero reads assigned to them.
   nEmpty = table((Matrix::colSums(fullCellMatrix) < emptyDropletCutoff) &(Matrix::colSums(fullCellMatrix) > 0))[2]
   # rowSum on a logical statement returns the number of TRUE occurences
-  occurences = rowSums(fullCellMatrix[,Matrix::colSums(fullCellMatrix) < emptyDropletCutoff] !=0)
+  occurences = Matrix::rowSums(fullCellMatrix[,Matrix::colSums(fullCellMatrix) < emptyDropletCutoff] !=0)
 
   #probability of a background read of a gene ending up in a cell
   probabiltyCellContaminationPerGene = occurences / nEmpty
@@ -100,7 +100,7 @@ describe.ambient.RNA.sequence = function(fullCellMatrix, start, stop, by, contam
   for(emptyCutoff in seq(start, stop, by)){
     nEmpty = table((Matrix::colSums(fullCellMatrix) < emptyCutoff) &(Matrix::colSums(fullCellMatrix) > 0))[2]
 
-    occurences = rowSums(fullCellMatrix[,Matrix::colSums(fullCellMatrix) < emptyCutoff] !=0)
+    occurences = Matrix::rowSums(fullCellMatrix[,Matrix::colSums(fullCellMatrix) < emptyCutoff] !=0)
 
     #probability of a background read of a gene ending up in a cell
     probabiltyCellContaminationPerGene = occurences / nEmpty
