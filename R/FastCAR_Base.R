@@ -11,6 +11,7 @@
 ###############################################################################
 library(Matrix)
 library(Seurat)
+library(qlcMatrix)
 ###############################################################################
 
 # had to make this function to efficiently modify sparse matrices on a per gene basis
