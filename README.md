@@ -30,40 +30,37 @@ library(Matrix)
 library(Seurat)
 library(qlcMatrix)
 library(FastCAR)
+```
+Specify the locations of the expression matrices
 
 ```
-
-
-
-```
-
 cellExpressionFolder  = c("Cellranger_output/sample1/filtered_feature_bc_matrix/")
 fullMatrixFolder      = c("Cellranger_output/sample1/raw_feature_bc_matrix/")
+```
+Set a location for storing the corrected cell/gene matrix
 
 ```
-
-
-
-```
-# This folder will contain the corrected cell matrix
 correctedMatrixFolder = c("Cellranger_output/sample1/corrected_feature_bc_matrix")
-
-
+```
+Load both the cell matrix and the full matrix
+```
 cellMatrix     = read.cell.matrix(cellExpressionFolder)
 fullMatrix     = read.full.matrix(fullMatrixFolder)
-
 ```
-
-The following functions give an idea of the effect that different settings have on the ambient RNA profile.
+The following functions give an idea of the effect that different settings have on the ambient RNA profile. 
+These are optional as they do take a few minutes and the default settings work fine
 Plotting the number of empty droplets, the number of genes identified in the ambient RNA, and the number of genes that will be corrected for at different UMI cutoffs,
 
 ```
-ambProfile = describe.ambient.RNA.sequence(fullCellMatrix = fullMatrix, start = 10, stop = 500, by = 10, contaminationChanceCutoff = 0.05)
+ambProfile = describe.ambient.RNA.sequence(fullCellMatrix = fullMatrix, 
+                                           start = 10, 
+                                           stop = 500, 
+                                           by = 10, 
+                                           contaminationChanceCutoff = 0.05)
+                                           
 plot.ambient.profile(ambProfile)
-
 ``` 
 ![picture](Images/Example_profile.png)
-
 
 
 Set the empty droplet cutoff and the contamination chance cutoff
@@ -79,17 +76,14 @@ In a cluster of a thousand cells divided into two groups there would be 2-3 cell
 Such low cell numbers are disregarded for differential expression analyses.
 
 ```
-
 emptyDropletCutoff        = 100 
 contaminationChanceCutoff = 0.05
-
 ```
 
+Determine the ambient RNA profile and remove the ambient RNA from each cell
 ```
 ambientProfile = determine.background.to.remove(fullMatrix, cellMatrix, emptyDropletCutoff, contaminationChanceCutoff)
 cellMatrix     = remove.background(cellMatrix, ambientProfile)
-
-
 ```
 
 Finally write the corrected cell/gene matrix to a file, this matrix can be used in Seurat the same way as any other cell/gene matrix.
@@ -100,14 +94,12 @@ write.corrected.matrix(cellMatrix, correctedMatrixFolder, ambientProfile)
 
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
 
 
 ## Authors
 
-* **Marijn Berg** - *Initial work* 
+* **Marijn Berg** - m.berg@umcg.nl
 
 ## License
 
