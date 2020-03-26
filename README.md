@@ -55,7 +55,7 @@ plot.ambient.profile(ambProfile)
 Set the empty droplet cutoff and the contamination chance cutoff
 
 The empty droplet cutoff is the number of UMIs a droplet can contain at the most to be considered empty.
-100 works fine but we tested this method in only one tissue. For other tissues this might not be the.
+100 works fine but we tested this method in only one tissue. For other tissues these settings may need to be changed.
 Increasing this number also increases the highest possible value of expression of a given gene.
 As the correction will remove this value from every cell it is adviced not to set this too high and thereby overcorrect the expression in lowly expressing cells.
 
