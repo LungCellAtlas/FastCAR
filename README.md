@@ -62,7 +62,7 @@ ambProfile = describe.ambient.RNA.sequence(fullCellMatrix = fullMatrix, start = 
 plot.ambient.profile(ambProfile)
 
 ``` 
-![picture](https://git.web.rug.nl/P278949/FastCAR/src/branch/master/Images/Example_profile.png)
+![picture](Images/Example_profile.png)
 
 
 
