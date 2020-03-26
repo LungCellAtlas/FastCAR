@@ -54,7 +54,8 @@ fullMatrix     = read.full.matrix(fullMatrixFolder)
 
 ```
 
-The following functions give an idea of the effect that different settings have on the ambient RNA profile
+The following functions give an idea of the effect that different settings have on the ambient RNA profile.
+Plotting the number of empty droplets, the number of genes identified in the ambient RNA, and the number of genes that will be corrected for at different UMI cutoffs,
 
 ```
 ambProfile = describe.ambient.RNA.sequence(fullCellMatrix = fullMatrix, start = 10, stop = 500, by = 10, contaminationChanceCutoff = 0.05)
@@ -65,7 +66,17 @@ plot.ambient.profile(ambProfile)
 
 
 
-Set 
+Set the empty droplet cutoff and the contamination chance cutoff
+
+The empty droplet cutoff is the number of UMIs a droplet can contain at the most to be considered empty.
+100 works fine but we tested this method in only one tissue. For other tissues this might not be the.
+Increasing this number also increases the highest possible value of expression of a given gene.
+As the correction will remove this value from every cell it is adviced not to set this too high and thereby overcorrect the expression in lowly expressing cells.
+
+The contamination chance cutoff is the allowed probability of a gene contaminating a cell. 
+As we developed FastCAR specifically for differential expression analyses between groups we suggest setting this such that not enough cells could be contaminated to affect this.
+In a cluster of a thousand cells divided into two groups there would be 2-3 cells per group with ambient RNA contamination of any given gene.
+Such low cell numbers are disregarded for differential expression analyses.
 
 ```
 
