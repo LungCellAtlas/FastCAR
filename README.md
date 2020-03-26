@@ -2,21 +2,10 @@
 
 FastCAR is an R package to remove ambient RNA from cells in droplet based single cell RNA sequencing data.
 
-## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+### Installation
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
-### Installing
-
-FastCAR can be install from git with the following command.
+FastCAR can be installed from git with the following command.
 
 ```
 devtools::install_git("https://git.web.rug.nl/P278949/FastCAR")
@@ -105,3 +94,7 @@ write.corrected.matrix(cellMatrix, correctedMatrixFolder, ambientProfile)
 
 This project is licensed under the GPL-3 License - see the [LICENSE.md](LICENSE.md) file for details
 
+## Changelog
+
+### v0.1
+First fully working version of the R package
