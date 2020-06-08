@@ -7,7 +7,8 @@
 # empty droplets and removing per gene the highest value found in the ambient
 # RNA if it's found to contaminate more than a certain threshold of droplets
 ###############################################################################
-# This file contains base functions
+# TODO
+#
 ###############################################################################
 library(Matrix)
 library(Seurat)
@@ -22,6 +23,14 @@ library(qlcMatrix)
 # p: the where in 'i' and 'x' a new column starts
 # Dimnames: The names of the rows and columns
 remove.background = function(geneCellMatrix, ambientRNAprofile){
+  # do some input checks first
+  if(!("dgCMatrix" %in% class(geneCellMatrix))){
+    cat("geneCellMatrix should be a sparse matrix of the \"dgCMatrix\" class")
+    stop()
+  }
+
+
+  # Here is the actual functionality
   for(gene in names(ambientProfile[ambientProfile > 0])){
     # Determine the locations where the gene is not zero, therefore referenced in i
     iLocs = which(geneCellMatrix@Dimnames[[1]] == gene)
@@ -72,20 +81,23 @@ read.full.matrix = function(fullFolderLocation){
 }
 
 ##############
+# Turns out that cellranger output looks different from WriteMM output and Read10X can't read the latter
+# TODO
+# Commented out until I find a fix
 
-write.corrected.matrix = function(correctedMatrix, folderLocation, correctedSignal){
-  dir.create(folderLocation)
-
-  writeMM(obj = correctedMatrix, file=paste(folderLocation, "/matrix.mtx", sep = ""))
-
-  # save genes and cells names
-  write(x = rownames(correctedMatrix), file = paste(folderLocation, "/genes.tsv", sep = ""))
-  write(x = colnames(correctedMatrix), file = paste(folderLocation, "/barcodes.tsv", sep = ""))
-
-  correctedSignal = correctedSignal[correctedSignal > 0]
-  write.table(list(correctedSignal), file = paste(folderLocation, "/genesCorrectedFor.csv", sep = ""), row.names = TRUE, col.names = FALSE)
-
-}
+# write.corrected.matrix = function(correctedMatrix, folderLocation, correctedSignal){
+#   dir.create(folderLocation)
+#
+#   writeMM(obj = correctedMatrix, file=paste(folderLocation, "/matrix.mtx", sep = ""))
+#
+#   # save genes and cells names
+#   write(x = rownames(correctedMatrix), file = paste(folderLocation, "/genes.tsv", sep = ""))
+#   write(x = colnames(correctedMatrix), file = paste(folderLocation, "/barcodes.tsv", sep = ""))
+#
+#   correctedSignal = correctedSignal[correctedSignal > 0]
+#   write.table(list(correctedSignal), file = paste(folderLocation, "/genesCorrectedFor.csv", sep = ""), row.names = TRUE, col.names = FALSE)
+#
+# }
 
 # describe the number of genes identified in the background
 # and the number of genes failing the contaminiation chance threshold
@@ -132,7 +144,13 @@ plot.ambient.profile = function(ambientProfile){
        ylab = "Genes identified as contamination")
 }
 
-
+# I noticed that the number of genes removed tends to even out over time
+# Test whether the point where this first happens is a good empty cutoff point
+recommend.empty.cutoff = function(ambientProfile){
+  highestNumberOfGenes = max(ambientProfile[,3])
+  firstOccurence = match(highestNumberOfGenes, ambientProfile[,3])
+  return(as.numeric(rownames(ambientProfile[firstOccurence,])))
+}
 
 
 

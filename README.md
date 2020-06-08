@@ -26,11 +26,6 @@ Specify the locations of the expression matrices
 cellExpressionFolder  = c("Cellranger_output/sample1/filtered_feature_bc_matrix/")
 fullMatrixFolder      = c("Cellranger_output/sample1/raw_feature_bc_matrix/")
 ```
-Set a location for storing the corrected cell/gene matrix
-
-```
-correctedMatrixFolder = c("Cellranger_output/sample1/corrected_feature_bc_matrix")
-```
 Load both the cell matrix and the full matrix
 ```
 cellMatrix     = read.cell.matrix(cellExpressionFolder)
@@ -64,6 +59,15 @@ As we developed FastCAR specifically for differential expression analyses betwee
 In a cluster of a thousand cells divided into two groups there would be 2-3 cells per group with ambient RNA contamination of any given gene.
 Such low cell numbers are disregarded for differential expression analyses.
 
+There is an experimental function that gives a recommendation based on the ambient profiling results.
+This selects the first instance of the maximum number of genes being corrected for.
+I have no idea yet if this is actually a good idea.
+
+```
+emptyDropletCutoff = recommend.empty.cutoff(ambProfile)
+```
+
+
 ```
 emptyDropletCutoff        = 100 
 contaminationChanceCutoff = 0.05
@@ -75,12 +79,10 @@ ambientProfile = determine.background.to.remove(fullMatrix, cellMatrix, emptyDro
 cellMatrix     = remove.background(cellMatrix, ambientProfile)
 ```
 
-Finally write the corrected cell/gene matrix to a file, this matrix can be used in Seurat the same way as any other cell/gene matrix.
+This corrected matrix can be used to to make a Seurat object
 
 ```
-
-write.corrected.matrix(cellMatrix, correctedMatrixFolder, ambientProfile)
-
+seuratObject = CreateSeuratObject(cellMatrix) 
 ```
 
 
@@ -96,3 +98,8 @@ This project is licensed under the GPL-3 License - see the [LICENSE.md](LICENSE.
 
 ### v0.1
 First fully working version of the R package
+
+### v0.2
+Fixed function to write the corrected matrix to file.
+Added readout of which genes will be corrected for and how many reads will be removed per cell
+Added some input checks to functions
