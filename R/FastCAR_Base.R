@@ -31,13 +31,13 @@ remove.background = function(geneCellMatrix, ambientRNAprofile){
 
 
   # Here is the actual functionality
-  for(gene in names(ambientProfile[ambientProfile > 0])){
+  for(gene in names(ambientRNAprofile[ambientRNAprofile > 0])){
     # Determine the locations where the gene is not zero, therefore referenced in i
     iLocs = which(geneCellMatrix@Dimnames[[1]] == gene)
     # Determine the location of the actual values,
     xLocs = which(geneCellMatrix@i == iLocs-1) # -1 because of 0 and 1 based counting systems
     # Remove the contaminating RNA
-    geneCellMatrix@x[xLocs] = geneCellMatrix@x[xLocs] - ambientProfile[gene]
+    geneCellMatrix@x[xLocs] = geneCellMatrix@x[xLocs] - ambientRNAprofile[gene]
   }
   # correct for instances where the expression was corrected to below zero
   geneCellMatrix@x[geneCellMatrix@x < 0] = 0
