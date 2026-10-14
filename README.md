@@ -2,6 +2,9 @@
 
 FastCAR is an R package to remove ambient RNA from cells in droplet based single cell RNA sequencing data.
 
+## The actual published version on up to date documentation can be found here:
+https://github.com/Nawijn-Group-Bioinformatics/FastCAR
+
 
 ### Installation
 
